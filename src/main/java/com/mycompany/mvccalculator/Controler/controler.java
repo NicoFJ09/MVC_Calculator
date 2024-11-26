@@ -205,20 +205,30 @@ public class controler implements ActionListener {
             catch(Exception ex){
                 _view.getjTextField1().setText("");
             }
-        } 
-        
+        }
+
         else if (e.getSource().equals(_view.bttn_mplus)) {
             try {
                 double numero = Double.parseDouble(_view.getjTextField1().getText());
+
+                // Check if memory is already at 10 elements
+                if (_model.getMemory().size() == 10) {
+                    // Remove the last element
+                    _model.getMemory().removeLast();
+                }
+
+                // Add the new number at the first position
                 _model.getMemory().addFirst(numero);
-                _bitacoraManager.escribirEnBitacora(  "M+ "+ numero + " > " + _model.getMemory().toString());
+
+                // Log the operation
+                _bitacoraManager.escribirEnBitacora("M+ " + numero + " > " + _model.getMemory().toString());
                 _bitacoraManager.actualizarBitacora();
             } catch (NumberFormatException ex) {
-                
+                // Handle invalid number input (you might want to add specific error handling)
             }
         }
- 
-        
+
+
         else if (e.getSource().equals(_view.bttn_avg)) {
             _view.getjTextField1().setText(_model.average());
             _bitacoraManager.escribirEnBitacora(  "AVG "+ _model.getMemory().toString() +" = "+ _view.getjTextField1().getText());
